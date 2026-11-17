@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FaceAge AI | Deteksi Kelompok Usia</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="FaceAge AI">
+        <img class="brand-logo" src="{{ url_for('static', filename='logo.png') }}" alt="FaceAge AI logo">
+      </a>
+      <div class="topbar-right">
+        <span class="system-pill"><span class="status-dot"></span> LOCAL INFERENCE</span>
+        <span id="modelDevice" class="device-label">Memeriksa perangkat...</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">COMPUTER VISION PROJECT</p>
+          <h1>Face Detection <span>&amp;</span><br>Age Group Classification</h1>
+          <p class="intro-copy">Deteksi wajah dan klasifikasikan perkiraan kelompok usia secara langsung menggunakan dua model YOLO.</p>
+        </div>
+        <div class="model-chip"><span class="pulse"></span> YOLO · REAL-TIME</div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel camera-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">LIVE MONITOR</p>
+              <h2>Kamera</h2>
+            </div>
+            <span id="cameraStatus" class="status-badge idle"><span></span> Kamera mati</span>
+          </div>
+
+          <div class="video-stage" id="videoStage">
+            <video id="video" autoplay muted playsinline></video>
+            <canvas id="overlay"></canvas>
+            <div id="cameraPlaceholder" class="camera-placeholder">
+              <div class="camera-icon">◎</div>
+              <strong>Kamera belum diaktifkan</strong>
+              <span>Tekan tombol “Mulai Kamera” untuk memulai deteksi.</span>
+            </div>
+            <div class="scan-line"></div>
+            <div class="stage-tag">LIVE FEED</div>
+          </div>
+
+          <div class="camera-controls">
+            <div class="camera-select-wrap">
+              <label for="cameraSelect">SUMBER KAMERA</label>
+              <select id="cameraSelect" aria-label="Pilih kamera">
+                <option value="">Kamera default</option>
+              </select>
+            </div>
+            <div class="button-row">
+              <button id="startButton" class="btn btn-primary">▶ Mulai Kamera</button>
+              <button id="stopButton" class="btn btn-secondary" disabled>Berhenti</button>
+            </div>
+          </div>
+          <p id="message" class="message">Izinkan akses kamera pada browser ketika diminta.</p>
+        </article>
+
+        <aside class="side-column">
+          <article class="panel summary-panel">
+            <p class="eyebrow">HASIL PEMINDAIAN</p>
+            <div class="summary-number" id="faceCount">0</div>
+            <p class="summary-caption">wajah terdeteksi saat ini</p>
+            <div class="summary-divider"></div>
+            <div class="dominant-row">
+              <span>Kategori terdeteksi</span>
+              <strong id="dominantAge">—</strong>
+            </div>
+          </article>
+
+          <article class="panel distribution-panel">
+            <div class="panel-heading compact">
+              <div><p class="eyebrow">AGE GROUP</p><h2>Rincian kategori</h2></div>
+              <span class="count-tag" id="categoryTotal">0</span>
+            </div>
+            <div class="age-list">
+              <div class="age-item"><div class="age-line"><span><i class="legend-dot baby"></i>Balita</span><b id="countBalita">0</b></div><div class="bar"><span id="barBalita" class="baby"></span></div></div>
+              <div class="age-item"><div class="age-line"><span><i class="legend-dot child"></i>Anak-anak</span><b id="countAnak">0</b></div><div class="bar"><span id="barAnak" class="child"></span></div></div>
+              <div class="age-item"><div class="age-line"><span><i class="legend-dot teen"></i>Remaja</span><b id="countRemaja">0</b></div><div class="bar"><span id="barRemaja" class="teen"></span></div></div>
+              <div class="age-item"><div class="age-line"><span><i class="legend-dot adult"></i>Dewasa</span><b id="countDewasa">0</b></div><div class="bar"><span id="barDewasa" class="adult"></span></div></div>
+              <div class="age-item"><div class="age-line"><span><i class="legend-dot senior"></i>Lansia</span><b id="countLansia">0</b></div><div class="bar"><span id="barLansia" class="senior"></span></div></div>
+            </div>
+          </article>
+
+          <article class="panel info-panel">
+            <p class="eyebrow">MODEL PIPELINE</p>
+            <div class="pipeline-step"><span class="step-icon">01</span><div><strong>YOLO Face Detection</strong><small>Mencari lokasi wajah</small></div><span class="step-check">✓</span></div>
+            <div class="pipeline-connector"></div>
+            <div class="pipeline-step"><span class="step-icon">02</span><div><strong>YOLO Age Classification</strong><small>Memprediksi kelompok usia</small></div><span class="step-check">✓</span></div>
+          </article>
+        </aside>
+      </section>
+
+      <section class="notice-row">
+        <span class="notice-icon">ⓘ</span>
+        <p>Hasil merupakan <strong>perkiraan kelompok usia berdasarkan tampilan wajah</strong>, bukan verifikasi usia sebenarnya. Skor model bukan probabilitas yang sudah dikalibrasi.</p>
+      </section>
+    </main>
+
+    <footer><span>FaceAge AI · Computer Vision</span><span>Gambar diproses pada server lokal dan tidak disimpan oleh aplikasi ini.</span></footer>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}?v=2"></script>
+</body>
+</html>
